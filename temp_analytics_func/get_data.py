@@ -19,9 +19,19 @@ page_size = 100000
 sampling_level = 'LARGE'
 
 
-def initialize_analytics_reporting(key_file_location = config.KEY_FILE_LOCATION):
+def initialize_analytics_reporting(key_file_location=config.KEY_FILE_LOCATION):
     """
     APIとの接続をする
+
+    Parameters
+    ----------
+    key_file_location : str
+        GCPで取得したサービスアカウントのJsonファイルのパス
+
+    Returns
+    -------
+    body : dict
+        辞書型のBody
     """
     credentials = ServiceAccountCredentials.from_json_keyfile_name(key_file_location, config.SCOPES)
     return build('analyticsreporting', 'v4', credentials=credentials)
@@ -30,7 +40,17 @@ def initialize_analytics_reporting(key_file_location = config.KEY_FILE_LOCATION)
 def get_body(view_id=config.VIEW_ID):
     """
     レクエストするBodyを返す
-    """
+
+    Parameters
+    ----------
+    view_id : str
+        AnalyticsのビューID
+
+    Returns
+    -------
+    body : dict
+        辞書型のBody
+    """ 
     body = {
         'reportRequests': [
             {
@@ -50,6 +70,11 @@ def get_body(view_id=config.VIEW_ID):
 def get_dimensions():
     """
     カスタムディメンションの値を取得する
+
+    Returns
+    -------
+    data : list
+        x, y, window_width, site_idのlist
     """
     analytics = initialize_analytics_reporting(config.KEY_FILE_LOCATION)
     response = analytics.reports().batchGet(body=get_body(config.VIEW_ID)).execute()

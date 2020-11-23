@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def top():
-    return render_template('top.html', title='Top Page', target_url = config.TARGET_URL)
+    return render_template('top.html', title='Top Page', target_url=config.TARGET_URL)
 
 #TODO: 後々は、Keyでサイトごとに指定をする
 @app.route('/get_click_data')
