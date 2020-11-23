@@ -45,6 +45,7 @@ def get_body(view_id=VIEW_ID):
                 'dimensions': dimensions,
                 'pageSize': page_size,
                 'samplingLevel': sampling_level,
+                # 'filters': 'ga:dimension2!=0;ga:dimension3!=0',
             }
         ]
     }

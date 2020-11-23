@@ -1,4 +1,4 @@
-from flask import Flask, render_template 
+from flask import Flask, render_template, jsonify
 
 # グーグルのAPIの呼び出し
 from temp_analytics_func import get_data
@@ -7,9 +7,16 @@ app = Flask(__name__)
 
 @app.route('/')
 def top():
+    return render_template('top.html', title='flask test')
+
+#TODO: 後々は、Keyでサイトごとに指定をする
+@app.route('/get_click_data')
+def get_click_data():
     #アナリティクスからデータの取得
     value = get_data.get_dimensions()
-    return render_template('top.html', resposen_data = value, title='flask test') #変更
+    #　フロント側にデータの送信
+    return jsonify(value)
+
 
 ## おまじない
 if __name__ == "__main__":

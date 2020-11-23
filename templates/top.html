@@ -1,12 +1,61 @@
 {% extends "layout.html" %}
 {% block content %}
 <h3>Hello</h3>
-こんにちは。{{ name }}さん。
+こんにちは。さん。
 
 
 <script type="text/javascript">
-  let resposen_data = {{resposen_data | tojson}};
-  console.log(resposen_data);
+  resposen_data = null;
+
+  // create instance
+  let heatmapInstance = h337.create({
+    container: document.querySelector('.heatmap'),
+    radius: 90
+  });
+
+  //アナリティクスからデータを取得する 
+  const get_click_data = async () => {
+    // Ajax通信を開始
+    await $.ajax({
+        url: 'get_click_data',
+        type: 'GET',
+        dataType: 'json',
+      })
+      .done(function (data) {
+        // 通信成功
+        resposen_data = data;
+        console.log('success');
+      })
+      .fail(function () {
+        // 通信失敗
+        console.log("error")
+      });
+  }
+
+  // データの取り出しヒートマップに追加
+  const heat_map_add = async () => {
+    let result = resposen_data.reduce((prev, data, index, array) => {
+      add_data_heatmap(data.dimensions, index);
+      return index
+    });
+    console.log(result);
+  }
+
+  // ヒートマップに追加
+  const add_data_heatmap = async (data, index) => {
+    heatmapInstance.addData({
+      x: data[0],
+      y: data[1],
+      value: index
+    });
+  }
+
+  const processAll = async function () {
+    await get_click_data()
+    await heat_map_add()
+  }
+
+  processAll()
 </script>
 
 {% endblock %}
