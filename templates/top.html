@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+<h3>Hello</h3>
+こんにちは。{{ name }}さん。
+
+
+<script type="text/javascript">
+  let resposen_data = {{resposen_data | tojson}};
+  console.log(resposen_data);
+</script>
+
+{% endblock %}
