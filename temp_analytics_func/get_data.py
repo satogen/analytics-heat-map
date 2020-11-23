@@ -50,6 +50,7 @@ def get_body(view_id=VIEW_ID):
     }
     return body
 
+
 def get_dimensions():
     """
     カスタムディメンションの値を取得する
@@ -57,10 +58,3 @@ def get_dimensions():
     analytics = initialize_analytics_reporting(KEY_FILE_LOCATION)
     response = analytics.reports().batchGet(body=get_body(VIEW_ID)).execute()
     return response['reports'][0]['data']['rows']
-
-# print(response['reports'][0]['data']['rows'])
-# for row in response['reports'][0]['data']['rows']:
-#   print('------------------------------')
-#   print(row['dimensions'])
-
-# return 

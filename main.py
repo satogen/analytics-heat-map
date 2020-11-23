@@ -1,6 +1,6 @@
 from flask import Flask, render_template 
 
-# グーグルの方の呼び出し
+# グーグルのAPIの呼び出し
 from temp_analytics_func import get_data
 
 app = Flask(__name__)
