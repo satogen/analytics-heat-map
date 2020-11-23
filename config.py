@@ -2,7 +2,6 @@
 from dotenv import load_dotenv
 load_dotenv()
 
-# 環境変数を参照
 import os
 
 SCOPES = ['https://www.googleapis.com/auth/analytics.readonly', 'https://www.googleapis.com/auth/analytics', 'https://www.googleapis.com/auth/analytics.edit']
