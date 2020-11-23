@@ -4,11 +4,6 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 import config
 
-# 基本設定
-SCOPES = config.SCOPES
-KEY_FILE_LOCATION = config.KEY_FILE_LOCATION
-VIEW_ID = config.VIEW_ID
-WEB_PROPERTY_ID = config.WEB_PROPERTY_ID
 
 # 取得対象の値
 m_list = ['users', 'sessions', 'pageviews', 'bounceRate', 'exitRate', 'avgTimeOnPage',]
@@ -24,15 +19,15 @@ page_size = 100000
 sampling_level = 'LARGE'
 
 
-def initialize_analytics_reporting(key_file_location = KEY_FILE_LOCATION):
+def initialize_analytics_reporting(key_file_location = config.KEY_FILE_LOCATION):
     """
     APIとの接続をする
     """
-    credentials = ServiceAccountCredentials.from_json_keyfile_name(key_file_location, SCOPES)
+    credentials = ServiceAccountCredentials.from_json_keyfile_name(key_file_location, config.SCOPES)
     return build('analyticsreporting', 'v4', credentials=credentials)
 
 
-def get_body(view_id=VIEW_ID):
+def get_body(view_id=config.VIEW_ID):
     """
     レクエストするBodyを返す
     """
@@ -56,6 +51,6 @@ def get_dimensions():
     """
     カスタムディメンションの値を取得する
     """
-    analytics = initialize_analytics_reporting(KEY_FILE_LOCATION)
-    response = analytics.reports().batchGet(body=get_body(VIEW_ID)).execute()
+    analytics = initialize_analytics_reporting(config.KEY_FILE_LOCATION)
+    response = analytics.reports().batchGet(body=get_body(config.VIEW_ID)).execute()
     return response['reports'][0]['data']['rows']
