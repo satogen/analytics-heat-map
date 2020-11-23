@@ -9,3 +9,4 @@ SCOPES = ['https://www.googleapis.com/auth/analytics.readonly', 'https://www.goo
 KEY_FILE_LOCATION = os.getenv('KEY_FILE_LOCATION')
 VIEW_ID = os.getenv('VIEW_ID')
 WEB_PROPERTY_ID = os.getenv('WEB_PROPERTY_ID')
+TARGET_URL = os.getenv('TARGET_URL')
