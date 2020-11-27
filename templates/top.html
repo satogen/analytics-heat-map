@@ -1,5 +1,19 @@
 {% extends "layout.html" %}
 {% block content %}
+
+<form id='target_search'>
+  <div class="form-group">
+    <label for="InputSiteId">サイトID</label>
+    <input required name="site_id" type="text" class="form-control" id="site_id_field" placeholder="対象サイトのIDを入力してください">
+  </div>
+  <div class="form-group">
+    <label for="InputSiteUrl">サイトのURLを入力</label>
+    <input required name="site_url" type="url" class="form-control" id="site_url_field" placeholder="対象サイトのURLを入力してください">
+  </div>
+  <button type="submit" class="btn btn-primary" id='search_target'>検索</button>
+</form>
+
+
 <div class='canvas'
      id='target'>
   <iframe src="{{target_url }}"

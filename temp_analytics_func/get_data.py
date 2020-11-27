@@ -40,7 +40,7 @@ def initialize_analytics_reporting(key_file_location=config.KEY_FILE_LOCATION):
     return build('analyticsreporting', 'v4', credentials=credentials)
 
 
-def get_body(view_id=config.VIEW_ID):
+def get_body(target_site_id, view_id=config.VIEW_ID):
     """
     レクエストするBodyを返す
 
@@ -63,14 +63,22 @@ def get_body(view_id=config.VIEW_ID):
                 'dimensions': dimensions,
                 'pageSize': page_size,
                 'samplingLevel': sampling_level,
-                # 'filters': 'ga:dimension2!=0;ga:dimension3!=0',
+                'dimensionFilterClauses': [{
+                    'filters': [{
+                        'dimensionName': 'ga:dimension5',
+                        'operator': 'EXACT',
+                        'expressions': [
+                                target_site_id
+                                ]
+                    }, ],
+                }]
             }
         ]
     }
     return body
 
 
-def get_dimensions():
+def get_dimensions(target_site_id):
     """
     カスタムディメンションの値を取得する
 
@@ -80,11 +88,15 @@ def get_dimensions():
         x, y, window_width, site_idのlist
     """
     analytics = initialize_analytics_reporting(config.KEY_FILE_LOCATION)
-    response = analytics.reports().batchGet(body=get_body(config.VIEW_ID)).execute()
-    response_data = response['reports'][0]['data']['rows']
-    # X,Yの座標の値をヒートマップ描写用に辞書型に変換
-    x_y_data = list(map(dict_change, response_data))
-    return x_y_data
+    body = get_body(target_site_id=target_site_id, view_id=config.VIEW_ID)
+    response = analytics.reports().batchGet(body=body).execute()
+    try:
+        response_data = response['reports'][0]['data']['rows']
+        # X,Yの座標の値をヒートマップ描写用に辞書型に変換
+        x_y_data = list(map(dict_change, response_data))
+        return x_y_data
+    except KeyError:
+        return False
 
 
 def dict_change(data):

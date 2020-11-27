@@ -24,12 +24,15 @@
   }
 
   //アナリティクスからデータを取得する 
-  const get_click_data = async () => {
+  const get_click_data = async (site_id) => {
     // Ajax通信を開始
     await $.ajax({
         url: 'get_click_data',
         type: 'GET',
         dataType: 'json',
+        data:{
+          'site_id': site_id
+        }
       })
       .done(function (data) {
         // 通信成功
@@ -53,15 +56,34 @@
 
   // ヒートマップに追加
   const add_data_heatmap = async () => {
-    heatmapInstance.addData(resposen_data);
+    if (resposen_data){
+      heatmapInstance.addData(resposen_data);
+    }else{
+      alert('データがありません');
+    }
   }
+
+  // データの検索
+  $("#target_search").submit(async(event) =>{
+    event.preventDefault();
+    let target_url = $("#site_url_field").val();
+    let target_site_id = $("#site_id_field").val();
+
+    // Iframeの表示
+    document.getElementById('target_frame').src = target_url;
+
+    // ターゲットのサイト検索
+    await get_click_data(target_site_id);
+
+    // データを挿入
+    await add_data_heatmap();
+
+  });
 
   // 関数の実行
   const processAll = async function () {
     // await iframeResize();
     await create_heat_map()
-    await get_click_data();
-    await add_data_heatmap()
   }
   // プロセスの実行
   processAll()
