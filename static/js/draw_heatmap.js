@@ -63,11 +63,32 @@
     }
   }
 
+  // ローカルストレージに保存
+  const save_site_data = async (value) =>{
+    localStorage.setItem('site_data',JSON.stringify(value));
+    // アイテムの追加
+    $('.nav-tabs').append(
+      `<li class="nav-item">` + 
+        `<a class="nav-link target_site" href="javascript:get_click_data('${value.site_id}')">`+
+          value.site_name +
+        `</a>` + 
+      `</li>`
+      );
+  }
+
   // データの検索
   $("#target_search").submit(async(event) =>{
     event.preventDefault();
     let target_url = $("#site_url_field").val();
     let target_site_id = $("#site_id_field").val();
+    let target_site_name = $("#site_name_field").val();
+
+    // ローカルストレージに保存
+    await save_site_data({
+      'url' : target_url, 
+      'site_id': target_site_id,
+      'site_name': target_site_name
+    });
 
     // Iframeの表示
     document.getElementById('target_frame').src = target_url;
@@ -77,7 +98,6 @@
 
     // データを挿入
     await add_data_heatmap();
-
   });
 
   // 関数の実行
@@ -85,5 +105,6 @@
     // await iframeResize();
     await create_heat_map()
   }
+
   // プロセスの実行
   processAll()
