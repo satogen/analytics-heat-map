@@ -83,9 +83,27 @@ def get_dimensions():
     response = analytics.reports().batchGet(body=get_body(config.VIEW_ID)).execute()
     response_data = response['reports'][0]['data']['rows']
     # X,Yの座標の値をヒートマップ描写用に辞書型に変換
-    x_y_data = [dict([('x', data['dimensions'][0]),
-                      ('y', data['dimensions'][1]), ('value', 100)]) for data in response_data]
+    x_y_data = list(map(dict_change, response_data))
     return x_y_data
+
+
+def dict_change(data):
+    """
+    X,Yの座標の値を受け取りやすい値に変換
+
+    Parameters
+    ----------
+    data : list
+        Analyticsのカスタムディメンションが含まれているデータ
+
+    Returns
+    -------
+    data : dict
+        ヒートマップに追加する座標の値
+    """
+    return dict([('x', data['dimensions'][0]),
+                 ('y', data['dimensions'][1]),
+                 ('value', 100)])
 
 
 def coordinate_resize(x, y, window_width, window_height, now_width, now_height):

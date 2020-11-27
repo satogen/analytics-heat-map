@@ -58,7 +58,7 @@
 
   // 関数の実行
   const processAll = async function () {
-    await iframeResize();
+    // await iframeResize();
     await get_click_data();
     await add_data_heatmap()
   }
