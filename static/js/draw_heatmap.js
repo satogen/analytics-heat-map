@@ -45,27 +45,22 @@
   // データの取り出しヒートマップに追加
   const heat_map_add = async () => {
     let result = resposen_data.reduce((prev, data, index, array) => {
-      add_data_heatmap(data.dimensions, index);
+      add_data_heatmap(data.dimensions);
       return index
     });
     console.log(result);
   }
 
   // ヒートマップに追加
-  const add_data_heatmap = async (data, index) => {
-    heatmapInstance.addData({
-      x: data[0],
-      y: data[1],
-      value: index
-    });
+  const add_data_heatmap = async () => {
+    heatmapInstance.addData(resposen_data);
   }
 
   // 関数の実行
   const processAll = async function () {
     await iframeResize();
-    //await create_heat_map();
-    //await get_click_data();
-    //await heat_map_add();
+    await get_click_data();
+    await add_data_heatmap()
   }
   // プロセスの実行
   processAll()
