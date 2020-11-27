@@ -101,8 +101,9 @@ def dict_change(data):
     data : dict
         ヒートマップに追加する座標の値
     """
-    return dict([('x', data['dimensions'][0]),
-                 ('y', data['dimensions'][1]),
+    x, y = coordinate_resize()
+    return dict([('x', int(data['dimensions'][0])),
+                 ('y', int(data['dimensions'][1])),
                  ('value', 100)])
 
 
